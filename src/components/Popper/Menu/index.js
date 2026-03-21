@@ -13,7 +13,7 @@ function Menu({ children, items = [] }) {
   };
   return (
     <HeadlessTippy
-    // visible
+      delay={[0, 700]}
       interactive
       placement="bottom-end"
       render={(attrs) => (
