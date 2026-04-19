@@ -10,7 +10,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Tippy from '@tippyjs/react';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { Children, useEffect, useState } from 'react';
 
 import images from '~/assets/images';
 import AccountItem from '~/components/AccountItem';
@@ -24,16 +24,31 @@ const MENU_ITEMS = [
   {
     icon: <FontAwesomeIcon icon={faEarthAsia} />,
     title: 'English',
+    children: {
+      title: 'Language',
+      data: [
+        {
+          type: 'language',
+          code: 'en',
+          title: 'English',
+        },
+        {
+          type: 'language',
+          code: 'vi',
+          title: 'Tiếng Việt',
+        },
+      ],
+    },
   },
   {
     icon: <FontAwesomeIcon icon={faCircleQuestion} />,
     title: 'Feedback and help',
-    to: '/feedback'
+    to: '/feedback',
   },
   {
-    icon: <FontAwesomeIcon icon={faKeyboard}/>,
+    icon: <FontAwesomeIcon icon={faKeyboard} />,
     title: 'Keyboard shortcuts',
-  }
+  },
 ];
 function Header() {
   const [searchResult, setSearchResult] = useState([]);
@@ -45,6 +60,15 @@ function Header() {
 
     return () => clearTimeout(timer);
   });
+
+  const handlerMenuOnchange = (menuItem) => {
+    switch (menuItem.type) {
+      case 'language':
+        break;
+      default:
+    }
+  };
+
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
@@ -54,12 +78,12 @@ function Header() {
           visible={searchResult.length > 0}
           render={(attrs) => (
             <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-              <PopperWrapper>
-                <h4 className={cx('search-title')}>Accounts</h4>
+              {/* <PopperWrapper> */}
+              {/* <h4 className={cx('search-title')}>Accounts</h4> */}
+              {/* <AccountItem />
                 <AccountItem />
-                <AccountItem />
-                <AccountItem />
-              </PopperWrapper>
+                <AccountItem /> */}
+              {/* </PopperWrapper> */}
             </div>
           )}
         >
@@ -79,7 +103,7 @@ function Header() {
           <Button text>Upload</Button>
           <Button primary>Log In</Button>
 
-          <Menu items={MENU_ITEMS}>
+          <Menu items={MENU_ITEMS} onChange={handlerMenuOnchange}>
             <button className={cx('more-btn')}>
               <FontAwesomeIcon icon={faEllipsisVertical} />
             </button>
