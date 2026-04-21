@@ -9,8 +9,7 @@ import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
-
-function Menu({ children, items = [], onChange = ()=>{} }) {
+function Menu({ children, items = [], onChange = () => {} }) {
   const [history, setHistory] = useState([{ data: items }]);
   const current = history[history.length - 1];
   const renderitems = () => {
@@ -23,9 +22,8 @@ function Menu({ children, items = [], onChange = ()=>{} }) {
           onClick={() => {
             if (isParent) {
               setHistory((prev) => [...prev, item.children]);
-            }
-            else{
-              onChange(item)
+            } else {
+              onChange(item);
             }
           }}
         />
@@ -34,7 +32,9 @@ function Menu({ children, items = [], onChange = ()=>{} }) {
   };
   return (
     <HeadlessTippy
+    visible
       delay={[0, 700]}
+      offset={[12, 8]}
       interactive
       placement="bottom-end"
       render={(attrs) => (
@@ -52,6 +52,9 @@ function Menu({ children, items = [], onChange = ()=>{} }) {
           </PopperWrapper>
         </div>
       )}
+      onHidden={() => {
+        setHistory((prev) => prev.slice(0, 1));
+      }}
     >
       {children}
     </HeadlessTippy>
