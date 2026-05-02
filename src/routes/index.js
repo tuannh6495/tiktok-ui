@@ -5,10 +5,11 @@ import Upload from '~/pages/Upload';
 import Search from '~/pages/Search';
 import HeaderOnly from '~/components/Layout/HeaderOnly';
 
+// Public routes
 const publicRoutes = [
   { path: '/', component: Home },
   { path: '/following', component: Following },
-  { path: '/profile', component: Profile },
+  { path: '/@:login', component: Profile },
   { path: '/upload', component: Upload, layout: HeaderOnly },
   { path: '/search', component: Search, layout: null },
 ];
