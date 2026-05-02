@@ -7,6 +7,7 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import AccountItem from '~/components/AccountItem';
 import { SearchIcon } from '~/components/Icons';
 import styles from './Search.module.scss';
+import { useDebounce } from '~/hooks';
 
 const cx = classNames.bind(styles);
 
@@ -16,17 +17,19 @@ function Search() {
   const [showResult, setShowResult] = useState(true);
   const [loading, setLoading] = useState(false);
 
+const deBounced = useDebounce(searchValue, 500);
+
   const inputRef = useRef();
 
   useEffect(() => {
-    if (!searchValue.trim()) {
+    if (!deBounced.trim()) {
       setSearchResult([]);
       return;
     }
 
     setLoading(true);
     const token = process.env.REACT_APP_GITHUB_TOKEN;
-    fetch(`https://api.github.com/search/users?q=${encodeURIComponent(searchValue)}&per_page=11`, {
+    fetch(`https://api.github.com/search/users?q=${encodeURIComponent(deBounced)}&per_page=11`, {
       headers: {
         Authorization: `token ${token}`,
       },
@@ -39,7 +42,7 @@ function Search() {
       .catch(() => {
         setLoading(false);
       });
-  }, [searchValue]);
+  }, [deBounced]);
 
   const handleClear = () => {
     setSearchValue('');
